@@ -1,0 +1,23 @@
+cff-version: 1.0.0
+title: >-
+ Qualitative Effects Blood Volume EIT
+message: >-
+  If you use this repository, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Patricia
+    family-names: Fuchs
+    email: pat.fuchs@uni-rostock.de
+    affiliation: Universität Rostock
+    orcid: 'https://orcid.org/0009-0006-4647-633X'
+repository-code: 'https://github.com/EITLabworks//Qualitative-Effects-Blood-Volume-EIT'
+url: 'https://github.com/EITLabworks/Qualitative-Effects-Blood-Volume-EIT'
+keywords:
+  - EIT
+  - Blood volume
+  - Machine Learning
+license: MIT
+version: 1.0
+doi: 
+date-released: '2025-01-31'
