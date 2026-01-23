@@ -64,5 +64,5 @@ Clone the repository:
 
 ## Author
 This repository is created by Patricia Fuchs, Institute of Communications Engineering, University of Rostock, Germany.   
-The research is based on the paper "Normalization of Electrical Impedance Tomography Data featuring Blood Volume Changes" for the "Annual International Conference of the IEEE Engineering in Medicine and Biology Society" (EMBC) 2026.
+The research is based on the paper "Normalization of Electrical Impedance Tomography Data featuring Blood Volume Changes" for the "Annual International Conference of the IEEE Engineering in Medicine and Biology Society" (EMBC) 2026.    
 For questions, please contact: pat.fuchs@uni-rostock.de
