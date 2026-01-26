@@ -1,0 +1,1 @@
+{"eit_device": "sciospec_16_32_64", "n_el": 32, "burst_count": 0, "framerate": 5, "exc_freq": 200000, "inj_skip": 4, "gain": 1, "adc_range": 1, "measurement_mode": "skip4", "mea_mode_noudary": "internal"}

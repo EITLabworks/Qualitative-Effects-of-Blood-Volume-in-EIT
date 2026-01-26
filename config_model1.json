@@ -1,0 +1,9 @@
+{
+ "data_path": "../data/",
+  "model_prefix": "./models/",
+  "aorta_max_length": 1024,
+  "iNel": 32,
+  "fR": 9.5,
+  "iInjSkip": 4,
+  "sMeaPattern": "skip4internal"
+}
