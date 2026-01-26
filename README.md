@@ -47,10 +47,10 @@ Clone the repository:
 
 ## Evaluation Results
 ### Training and Testing Data Estimation Results
-![Estimation Results.](results/nn/models/20260122-024634/real vs pred.png)
+![Estimation Results.](results/models/20260122-024634/real vs pred.png)
 
 ### MAE of different Normalization Strategies
-![MAE](results/Results_norm.png)
+![MAE](results/results_mae.png)
 
 
 
