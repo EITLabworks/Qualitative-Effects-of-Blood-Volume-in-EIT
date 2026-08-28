@@ -29,6 +29,12 @@ class TrainingParas:
         self.sConfigFile = "/config_model1.json"
         self.sDataConfig = "config1"
         self.iAugFactor = 0
+        self.bRealPart = False
+        self.bSmallSize = False
+        self.bAddDisturbances = False
+        self.sSplit = "none"
+        self.sPrescale = "none"
+        self.fNoiseSNR = 0  # in dB
 
     # ------------------------------------------------------------------------------------------------------------------- #
     def write_configs(self, f):
@@ -46,6 +52,15 @@ class TrainingParas:
         f.write(f"sDataConfig: {self.sDataConfig} \n")
         f.write("Model Selection: " + str(self.sModelSelection) + "\n")
         f.write("iAugFactor: " + str(self.iAugFactor) + "\n")
+        f.write("bRealPart: " + str(self.bRealPart) + "\n")
+        f.write("bSmallSize: " + str(self.bSmallSize) + "\n")
+        f.write("fNoiseSNR [dB]: " + str(self.fNoiseSNR) + "\n")
+        if self.bAddDisturbances:
+            f.write("bAddDisturbances: " + str(self.bAddDisturbances) + "\n")
+        if self.sSplit != "none":
+            f.write("Split: " + str(self.sSplit) + "\n")
+        if self.sPrescale != "none":
+            f.write("Prescale: " + str(self.sPrescale) + "\n")
 
 
 def parse_arguments(bParseArgs: bool):
@@ -64,9 +79,17 @@ def parse_arguments(bParseArgs: bool):
         parser.add_argument("-nw", "--nwtype", type=str, help="NW Type", default="ann_reg")
         parser.add_argument("-ms", "--modelselection", type=str,
                             help="Select a different model than the standard config", default="none")
+        parser.add_argument("-rp", "--realpart", type=bool,
+                            help="if use real part instead of abs voltages", default=False)
+
+        parser.add_argument("-sz", "--smallsize", type=bool, help="Make network smaller", default=False)
+        parser.add_argument("-di", "--bdist", type=bool, help="Add disturbances", default=False)
+        parser.add_argument("-sp", "--split", type=str, help="For Train-Vali-Set Separation", default="none")
+        parser.add_argument("-ps", "--prescale", type=str, help="For Prescaling sim data", default="none")
+        parser.add_argument("-no", "--noisesnr", type=float, help="SNR for added noise [dB]", default=0)
 
         parser.add_argument("-af", "--augfac", type=int, help="Augmentation factor", default=0)
-        args = parser.parse_args()
+        args = parser.parse_known_args()
         print(args)
         P = TrainingParas()
 
@@ -81,6 +104,18 @@ def parse_arguments(bParseArgs: bool):
         P.bAxisdep = args.axisdep
         P.sNWType = args.nwtype
         P.iAugFactor = args.augfac
+
+        P.bRealPart = args.realpart
+        P.bSmallSize = args.smallsize
+        P.bAddDisturbances = args.bdist
+        P.fNoiseSNR = args.noisesnr
+        if P.sNWType.startswith("cnn"):
+            P.bReshape = True
+
+        P.sModelSelection = args.modelselection
+        P.sSplit = args.split
+        P.sPrescale = args.prescale
+
         if P.sNWType.startswith("cnn"):
             P.bReshape = True
 

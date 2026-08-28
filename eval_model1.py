@@ -1,5 +1,5 @@
 """
-Project ：Qualitative-Effects-Blood-Volume-EIT
+Project ：Qualitative-Effects-of-Blood-Volume-in-EIT
 Directory:
 File : eval_model1.py
 Author ：Patricia Fuchs
@@ -11,13 +11,10 @@ import warnings
 import psutil
 process=psutil.Process()
 warnings.filterwarnings('ignore')
-import gc
-import keras_tuner as kt
-import keras
 from src.nn.help_nn_fcts import *
-from src.data.load_data_nn import load_mea_data_static, norm_area_inverse, split_train_test2, apply_dataaugmentation
+from src.data.load_data_nn import load_mea_data_static, norm_area_inverse, split_train_test2
 from src.nn.training_paras import TrainingParas, parse_arguments
-from src.nn.plotting import *
+from src.nn.visu_nn_results import *
 from data.measurement_configs.train_configs import return_data_configs
 import json
 set_global_determinism(26)
@@ -32,15 +29,14 @@ data_path = "../data/"
 mprefix = '../nn/models/'
 
 
-modelpath = "20260122-024634/"
+modelpath = "20260816-125744/"
 # Parsing of arguments ------------------------------------------------------------------------------------------ #
 
 TP = parse_arguments(bParseArgs)        # TrainingParameters
-TP.sDataConfig="2no8"
+TP.sDataConfig="8meafull"
 # Import Data Configurations
 input_folders, probetypes, positions, vents, mealist, testcond, valicond = return_data_configs(TP.sDataConfig)
 
-TP.iAugFactor=0
 TP.sNormtype="minmax"
 TP.bAxisdep=False
 TP.bReshape=True
@@ -67,25 +63,15 @@ ppfXTrain, pfYTrain,pMetaTrain, ppfXTest, pfYTest, pMetaTest = load_mea_data_sta
     mealist,
     vents,
     iNel = TP.iNel,
-    fR = TP.fR,
-    injskip=TP.iInjSkip,
-    meapatt=TP.sMeaPattern,
-    posfactor=TP.sPosfactor,
     normtype= TP.sNormtype,
     axisdep=TP.bAxisdep,
     bReshape = TP.bReshape,
-    bShuffle = True,
-    bRealPart=TP.bRealPart)
+    bShuffle = True)
 
 print("Finished loading data.")
 
 ppfXTrain, pMetaTrain, pfYTrain, ppfXValid, pMetaValid, pfYValid = split_train_test2(ppfXTrain, pMetaTrain,valicond, pfYTrain)
-
 print(f"{ppfXTrain.shape=},{ppfXValid.shape=},{pfYTrain.shape=},{pfYValid.shape=}")
-
-
-if TP.iAugFactor!=0:
-    ppfXTrain, pMetaTrain, pfYTrain = apply_dataaugmentation(len(ppfXTrain), TP.iAugFactor, ppfXTrain, pMetaTrain, pfYTrain, TP.bReshape)
 
 
 
@@ -116,6 +102,7 @@ path = mprefix
 
 
 bPlotGraphics=True
+bSave=True
 
 
 pfYValid_preds = pfYValid_preds.numpy().flatten()
@@ -131,7 +118,6 @@ pfYTest = norm_area_inverse(pfYTest)
 pfYValid = norm_area_inverse(pfYValid)
 
 
-
 # Set global font settings
 plt.rcParams.update({
     "font.family": "Times New Roman",
@@ -139,13 +125,7 @@ plt.rcParams.update({
 })
 
 
-visu_metrics_heat2(pfYTest, pfYTest_preds,pfYTrain,  pfYTrain_preds, "Training- Test Static Probes",pMetaTest, pMetaTrain, bShow=bPlotGraphics, bSave=bSave)
-visu_metrics_heat(pfYTest, pfYTest_preds,pfYTrain,  pfYTrain_preds, "Training- Test Static Probes",pMetaTest, pMetaTrain, bShow=bPlotGraphics, bSave=bSave)
-
-visu_metrics_combines(pfYTest, pfYTest_preds,pfYValid,  pfYValid_preds, "Static Probes",bShow= bPlotGraphics, bSave=bSave)
-visu_metrics_bypos(pfYTest, pfYTest_preds,pfYValid,  pfYValid_preds, "Static Probes",pMetaTest, pMetaValid, bShow=bPlotGraphics, bSave=bSave)
-visu_metrics_bypos(pfYTest, pfYTest_preds,pfYTrain,  pfYTrain_preds, "Training- Test Static Probes",pMetaTest, pMetaTrain, bShow=bPlotGraphics, bSave=bSave)
+visu_metrics_combines(path, pfYTest, pfYTest_preds,pfYValid,  pfYValid_preds, "Static Probes",bShow= bPlotGraphics, bSave=bSave)
+visu_results(pfYTest, pfYTest_preds, "TestParas", bSave, path, bShow=bPlotGraphics)
 
 print("Testing finished.")
-
-

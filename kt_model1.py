@@ -1,3 +1,10 @@
+"""
+Project ：Qualitative-Effects-of-Blood-Volume-in-EIT
+Directory:
+File : kt_model1.py
+Author ：Patricia Fuchs
+Date ：22.01.2026 11:36
+"""
 from tensorflow.keras.layers import Input, Dense, Dropout, Normalization, Activation, Conv2D, MaxPooling2D, Flatten, BatchNormalization
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
@@ -11,18 +18,18 @@ import math
 import keras_tuner as kt
 import keras
 from src.nn.help_nn_fcts import *
-from src.data.load_data_nn import load_mea_data_static, norm_area_inverse, split_train_test2, apply_dataaugmentation
+from src.data.load_data_nn import load_mea_data_static, norm_area_inverse, split_train_test2
 import os
 import time
 from contextlib import redirect_stdout
 import pickle
 import shutil, json
 from src.nn.training_paras import TrainingParas, parse_arguments
-from src.nn.tuner_models import models_kt
 from data.measurement_configs.train_configs import return_data_configs
-from src.nn.plotting import *
+from src.nn.visu_nn_results import *
 set_global_determinism(26)
-
+# -------------------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
 bSaveModel = True
 bParseArgs = True
 
@@ -48,12 +55,6 @@ print("Starting with config:\n"+str(config))
 data_path = config["data_path"]
 # Data Loading
 TP.iNel = config["iNel"]
-TP.iDim = int(TP.iNel*TP.iNel)
-TP.fR = config["fR"]
-TP.iInjSkip = config["iInjSkip"]
-TP.sMeaPattern = config["sMeaPattern"]
-
-
 # Load data
 print("Started loading data.")
 ppfXTrain, pfYTrain,pMetaTrain, ppfXTest, pfYTest, pMetaTest = load_mea_data_static(
@@ -65,23 +66,19 @@ ppfXTrain, pfYTrain,pMetaTrain, ppfXTest, pfYTest, pMetaTest = load_mea_data_sta
     mealist,
     vents,
     iNel = TP.iNel,
-    fR = TP.fR,
-    injskip=TP.iInjSkip,
-    meapatt=TP.sMeaPattern,
-    posfactor=TP.sPosfactor,
     normtype= TP.sNormtype,
     axisdep=TP.bAxisdep,
     bReshape = TP.bReshape,
-    bShuffle = True)
+    bShuffle = True,
+    bAddDisturbances=TP.bAddDisturbances,
+    sprescale=TP.sPrescale
+)
 
 print("Finished loading data.")
 
 
 ppfXTrain, pMetaTrain, pfYTrain, ppfXValid, pMetaValid, pfYValid = split_train_test2(ppfXTrain, pMetaTrain,valicond, pfYTrain)
 print(f"{ppfXTrain.shape=},{ppfXValid.shape=},{pfYTrain.shape=},{pfYValid.shape=}")
-
-if TP.iAugFactor!=0:
-    ppfXTrain, pMetaTrain, pfYTrain = apply_dataaugmentation(len(ppfXTrain), TP.iAugFactor, ppfXTrain, pMetaTrain, pfYTrain, TP.bReshape)
 
 
 # Start model initialization --------------------------------------------------------------------- #
@@ -129,10 +126,10 @@ def tuner_cnn_regression(hp):
     return model
 
 
-model_build_fct= models_kt[TP.sNWType]
+
 
 b ="Axisdep" if TP.bAxisdep else "NoAxisDep"
-tuner =kt.Hyperband( model_build_fct,
+tuner =kt.Hyperband( tuner_cnn_regression,
     objective='val_loss',           # val_loss oder ["val_loss, "loss"]
     max_epochs=30,
     factor=2,
@@ -205,6 +202,7 @@ if bSaveModel:
 
 # Visualization ----------------------------------------------------------------------------- #
 bPlotGraphics = True
+bSave=True
 
 plot_history(history, "mse", bSave=bPlotGraphics,fSavePath=path)
 plot_history(history, "loss", bSave=bPlotGraphics,fSavePath=path)
@@ -223,12 +221,8 @@ pfYValid = norm_area_inverse(pfYValid)
 
 
 # Result plotting
-visu_metrics_heat2(pfYTest, pfYTest_preds,pfYTrain,  pfYTrain_preds, "Training- Test Static Probes",pMetaTest, pMetaTrain, bShow=bPlotGraphics, bSave=bSave)
-visu_metrics_heat(pfYTest, pfYTest_preds,pfYTrain,  pfYTrain_preds, "Training- Test Static Probes",pMetaTest, pMetaTrain, bShow=bPlotGraphics, bSave=bSave)
-
-visu_metrics_combines(pfYTest, pfYTest_preds,pfYValid,  pfYValid_preds, "Static Probes",bShow= bPlotGraphics, bSave=bSave)
-visu_metrics_bypos(pfYTest, pfYTest_preds,pfYValid,  pfYValid_preds, "Static Probes",pMetaTest, pMetaValid, bShow=bPlotGraphics, bSave=bSave)
-visu_metrics_bypos(pfYTest, pfYTest_preds,pfYTrain,  pfYTrain_preds, "Training- Test Static Probes",pMetaTest, pMetaTrain, bShow=bPlotGraphics, bSave=bSave)
+visu_results(pfYTest, pfYTest_preds, "TestParas", bSave, path, bShow=bPlotGraphics)
+visu_metrics_combines(path,pfYTest, pfYTest_preds,pfYValid,  pfYValid_preds, "Static Probes",bShow= bPlotGraphics, bSave=bSave)
 
 
 print("Testing finished.")
