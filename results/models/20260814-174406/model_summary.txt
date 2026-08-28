@@ -1,0 +1,70 @@
+Epochs: 50
+Batchsize: 32
+Learningrate: 0.001
+FactorDense: 3
+Latent_dim = Num Paras: 1
+Kernel: 5
+Filter number Conv layer 1: 8
+Filter number Conv layer 2: 8
+Filter number Conv layer 3: 12
+Activation function conv layer: elu
+Activation function dense layer: elu
+Activation function output layer: relu
+Lossfunction: mse
+bDropout layer: False
+Dropout factor: 0.1
+Batchnorm: False
+Network type: cnn_reg 
+Number Electrodes: 32 
+Position Factor: none 
+Normalization strategy: minmax
+bAxisdependent: True 
+sConfigfile: /config5_tankfull_shifted.json 
+sDataConfig: 8meafull 
+Model Selection: none
+bRealPart: True
+iAugFactor: 0
+bSmallSize: True
+fNoiseSNR [dB]: 0.0
+
+
+
+Model: "functional_2"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ input_layer_2 (InputLayer)           │ (None, 32, 32, 1)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_5 (Conv2D)                    │ (None, 11, 8, 6)            │              60 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_5 (Activation)            │ (None, 11, 8, 6)            │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_7 (Dropout)                  │ (None, 11, 8, 6)            │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_6 (Conv2D)                    │ (None, 11, 4, 5)            │           1,085 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_2                │ (None, 11, 4, 5)            │              20 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_6 (Activation)            │ (None, 11, 4, 5)            │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_8 (Dropout)                  │ (None, 11, 4, 5)            │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_7 (Conv2D)                    │ (None, 4, 2, 5)             │             630 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_7 (Activation)            │ (None, 4, 2, 5)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_9 (Dropout)                  │ (None, 4, 2, 5)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten_2 (Flatten)                  │ (None, 40)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_4 (Dense)                      │ (None, 10)                  │             410 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_10 (Dropout)                 │ (None, 10)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_5 (Dense)                      │ (None, 1)                   │              11 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 6,630 (25.90 KB)
+ Trainable params: 2,206 (8.62 KB)
+ Non-trainable params: 10 (40.00 B)
+ Optimizer params: 4,414 (17.25 KB)

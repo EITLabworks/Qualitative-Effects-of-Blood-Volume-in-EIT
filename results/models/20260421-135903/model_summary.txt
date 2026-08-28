@@ -1,0 +1,72 @@
+Epochs: 50
+Batchsize: 32
+Learningrate: 0.001
+FactorDense: 3
+Latent_dim = Num Paras: 1
+Kernel: 5
+Filter number Conv layer 1: 8
+Filter number Conv layer 2: 8
+Filter number Conv layer 3: 12
+Activation function conv layer: elu
+Activation function dense layer: elu
+Activation function output layer: relu
+Lossfunction: mse
+bDropout layer: False
+Dropout factor: 0.1
+Batchnorm: False
+Network type: cnn_reg 
+Number Electrodes: 32 
+Position Factor: none 
+Normalization strategy: tanh
+bAxisdependent: True 
+sConfigfile: /config5_tankfull_shifted.json 
+sDataConfig: 8meafull 
+Model Selection: none
+bRealPart: True
+iAugFactor: 0
+bSmallSize: True
+
+
+
+Model: "functional_6"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ input_layer_6 (InputLayer)           │ (None, 32, 32, 1)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_13 (Conv2D)                   │ (None, 16, 32, 6)           │              60 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_11               │ (None, 16, 32, 6)           │              24 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_13 (Activation)           │ (None, 16, 32, 6)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_19 (Dropout)                 │ (None, 16, 32, 6)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_14 (Conv2D)                   │ (None, 8, 8, 6)             │           1,302 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_12               │ (None, 8, 8, 6)             │              24 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_14 (Activation)           │ (None, 8, 8, 6)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_20 (Dropout)                 │ (None, 8, 8, 6)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten_6 (Flatten)                  │ (None, 384)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_12 (Dense)                     │ (None, 10)                  │           3,850 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_13               │ (None, 10)                  │              40 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_21 (Dropout)                 │ (None, 10)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_13 (Dense)                     │ (None, 1)                   │              11 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 15,847 (61.91 KB)
+ Trainable params: 5,267 (20.57 KB)
+ Non-trainable params: 44 (176.00 B)
+ Optimizer params: 10,536 (41.16 KB)
+
+Best Results 
+{'num_convlayers': 3, 'filter_1': 6, 'kernel_1': 3, 'stride_0_1': 2, 'stride_1_1': 1, 'activation_1': 'relu', 'dropout_1': 0.0, 'batchnorm_1': True, 'filter_2': 6, 'kernel_2': 6, 'stride_0_2': 2, 'stride_1_2': 4, 'activation_2': 'relu', 'dropout_2': 0.2, 'batchnorm_2': True, 'num_dense_layers': 2, 'units_1': 10, 'batchnormdense_1': True, 'dropoutdense_1': 0.2, 'learning_rate': 0.0001, 'loss': 'mse', 'units_2': 6, 'batchnormdense_2': True, 'dropoutdense_2': 0.0, 'filter_3': 4, 'kernel_3': 5, 'stride_0_3': 1, 'stride_1_3': 1, 'activation_3': 'elu', 'dropout_3': 0.30000000000000004, 'batchnorm_3': True, 'tuner/epochs': 15, 'tuner/initial_epoch': 0, 'tuner/bracket': 1, 'tuner/round': 0}
