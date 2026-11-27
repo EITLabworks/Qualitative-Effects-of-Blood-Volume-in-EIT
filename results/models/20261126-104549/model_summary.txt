@@ -1,0 +1,70 @@
+Epochs: 50
+Batchsize: 32
+Learningrate: 0.001
+FactorDense: 3
+Latent_dim = Num Paras: 1
+Kernel: 5
+Filter number Conv layer 1: 8
+Filter number Conv layer 2: 8
+Filter number Conv layer 3: 12
+Activation function conv layer: elu
+Activation function dense layer: elu
+Activation function output layer: relu
+Lossfunction: mse
+bDropout layer: False
+Dropout factor: 0.1
+Batchnorm: False
+Network type: cnn_reg 
+Number Electrodes: 32 
+Position Factor: none 
+Normalization strategy: medmad
+bAxisdependent: True 
+sConfigfile: /config5_tankfull_shifted.json 
+sDataConfig: 9meafull1pr5 
+Model Selection: none
+bRealPart: True
+iAugFactor: 0
+bSmallSize: True
+fNoiseSNR [dB]: 0
+
+
+
+Model: "functional_4"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ input_layer_4 (InputLayer)           │ (None, 32, 32, 1)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_9 (Conv2D)                    │ (None, 11, 16, 5)           │             130 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_9 (Activation)            │ (None, 11, 16, 5)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_13 (Dropout)                 │ (None, 11, 16, 5)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_10 (Conv2D)                   │ (None, 3, 6, 6)             │             276 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_10 (Activation)           │ (None, 3, 6, 6)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_14 (Dropout)                 │ (None, 3, 6, 6)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_11 (Conv2D)                   │ (None, 1, 2, 3)             │             651 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_11 (Activation)           │ (None, 1, 2, 3)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_15 (Dropout)                 │ (None, 1, 2, 3)             │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten_4 (Flatten)                  │ (None, 6)                   │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_8 (Dense)                      │ (None, 54)                  │             378 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_16 (Dropout)                 │ (None, 54)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_9 (Dense)                      │ (None, 1)                   │              55 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 4,472 (17.47 KB)
+ Trainable params: 1,490 (5.82 KB)
+ Non-trainable params: 0 (0.00 B)
+ Optimizer params: 2,982 (11.65 KB)
+
+Best Results 
+{'num_convlayers': 4, 'filter_1': 5, 'kernel_1': 5, 'stride_0_1': 3, 'stride_1_1': 2, 'activation_1': 'elu', 'dropout_1': 0.0, 'batchnorm_1': False, 'filter_2': 6, 'kernel_2': 3, 'stride_0_2': 4, 'stride_1_2': 3, 'activation_2': 'elu', 'dropout_2': 0.2, 'batchnorm_2': False, 'num_dense_layers': 2, 'units_1': 54, 'batchnormdense_1': False, 'dropoutdense_1': 0.2, 'learning_rate': 0.001, 'loss': 'mse', 'units_2': 14, 'batchnormdense_2': False, 'dropoutdense_2': 0.2, 'filter_3': 3, 'kernel_3': 6, 'stride_0_3': 4, 'stride_1_3': 4, 'activation_3': 'relu', 'dropout_3': 0.0, 'batchnorm_3': False, 'tuner/epochs': 30, 'tuner/initial_epoch': 15, 'tuner/bracket': 3, 'tuner/round': 3, 'tuner/trial_id': '0058'}

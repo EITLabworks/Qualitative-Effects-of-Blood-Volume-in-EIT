@@ -256,3 +256,59 @@ def visu_metrics_combines(savepath, y_true_test, y_predict_test, y_true_vali, y_
         fig.savefig(savepath + name + "PredictionErrorCombine.png")
     if bShow:
         plt.show()
+
+
+# -------------------------------------- #
+def visu_results_triple_vloocv(y_true, y_predict, y_true2, y_predict2, y_true3, y_predict3, name, name2, names3, bSave,
+                          savepath, bShow=False):
+    """
+    Visualize certain metrics
+    """
+    fs = 18
+    plt.rcParams["font.family"] = "Times New Roman"
+    fig, axs = plt.subplots(nrows=3, figsize=(6.5, 15.5))
+    axs[0].scatter(y_true, y_predict, alpha=0.2, s=25, color="midnightblue", label=name)
+    limits = [0, 12]
+    line = np.arange(limits[0], limits[1], 1)
+    for i in range(3):
+        axs[i].plot(line, line, color="black", linewidth=2, linestyle="--")
+        axs[i].tick_params(axis='both', which='major', labelsize=fs)
+        axs[i].tick_params(axis='both', which='minor', labelsize=14)
+        #   axs[i].set_facecolor("whitesmoke")
+        axs[i].set_ylabel("Estimated Probe Size [cm$^2$]", fontsize=fs, loc="top")
+    axs[2].set_xlabel("Real Probe Size [cm$^2$]", fontsize=fs, loc="right")
+
+
+    plt.subplots_adjust(left=0.079, top=0.936, right=0.957, bottom=0.08)
+    for axi in axs.flat:
+        for axis in ["top", "bottom", "left", "right"]:
+            axi.spines[axis].set_linewidth(2)
+
+    axs[1].scatter(y_true2, y_predict2, alpha=0.2, s=25, color="maroon", label=name2)
+    colors = ["lightsteelblue", "steelblue","teal", "gold", "goldenrod", "peru" ]
+
+    line_handles = []
+    for k in range(len(y_true3)):
+        l1 = axs[2].scatter(y_true3[k], y_predict3[k], alpha=0.2, s=25, color=colors[k], label=names3[k])
+        line_handles.append(l1)
+        if k==2:
+            leg1= axs[2].legend(fontsize=fs, loc="upper left", handletextpad=0.05, borderpad=0.25, labelspacing=0.25)
+
+    for i in range(2):
+        axs[i].legend(fontsize=fs,handletextpad=0.05, borderpad=0.25, labelspacing=0.25)
+    leg2= axs[2].legend(handles=line_handles[3:], fontsize=fs, loc="lower right", handletextpad=0.05, borderpad=0.1, labelspacing=0.25)
+    axs[2].add_artist(leg1)
+
+    for lh in leg1.legend_handles:
+        lh.set_alpha(1)
+    for lh in leg2.legend_handles:
+        lh.set_alpha(1)
+
+    plt.tight_layout()
+    if bSave:
+        fig.savefig(savepath + name + name2 + "OmittedProbeLOOCV" + "_v.png")
+        fig.savefig(savepath + name + name2 + "OmittedProbeLOOCV" + "_v.svg")
+        fig.savefig(savepath + name + name2 + "OmittedProbeLOOCV" + "_v.pdf")
+    if bShow:
+        plt.show()
+    gc.collect()

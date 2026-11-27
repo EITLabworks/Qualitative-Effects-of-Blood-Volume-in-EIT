@@ -54,8 +54,12 @@ Clone the repository:
 
 
 ## Evaluation Results
-### Training and Testing Data Estimation Results 
+### Testing Data Estimation Results for Sim1, T1 and T2-MedTub
 ![Estimation Results.](results/3Feasibility.png)
+
+### Testing Data Estimation Results for Sim1, T1 and T2-X
+![Estimation Results.](results/feasibility.png)
+
 
 ### MAE of different Normalization Strategies
 ![MAE](results/MAE_Norm2.png)
